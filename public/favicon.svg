@@ -1,0 +1,7 @@
+<svg width="150" height="50" viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <text x="25" y="60" font-family="Segoe UI, Roboto, sans-serif" font-size="42" fill="#F59E0B" font-weight="bold">OK</text>
+  <text x="90" y="60" font-family="Segoe UI, Roboto, sans-serif" font-size="42" fill="#111827">Blogs</text>
+  <circle cx="205" cy="50" r="5" fill="#10B981">
+    <animate attributeName="r" from="5" to="10" dur="1.5s" repeatCount="indefinite" values="5;10;5"/>
+  </circle>
+</svg>
