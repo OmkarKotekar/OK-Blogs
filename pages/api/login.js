@@ -5,26 +5,31 @@ var CryptoJS = require('crypto-js');
 var jwt = require('jsonwebtoken');
 
 const handler = async (req, res) => {
-    if (req.method == 'POST') {
-        let user = await User.findOne({ 'email': req.body.email })
-        const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
-        let decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
-        if (user) {
-            if (req.body.email == user.email && req.body.password  == decryptedPass) {
-                var token = jwt.sign({ email:user.email, name: user.username }, process.env.SECRET_KEY, {expiresIn: '1d'});
-                res.status(200).json({success: true, token})
-            }
-            else{
-                res.status(200).json({ success: false,error: "Invalid Credentials" })
-            }
-        }
-        else {
-            res.status(200).json({ success: false, error: "No user found"})
+  if (req.method === 'POST') {
+    await connectDb(); // ✅ Connect to DB first
 
-        }
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(200).json({ success: false, error: "No user found" });
     }
-    else {
-        res.status(400).json({ error: 'This method is not allowed' })
+
+    const bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET_KEY);
+    const decryptedPass = bytes.toString(CryptoJS.enc.Utf8);
+
+    if (req.body.password === decryptedPass) {
+      const token = jwt.sign(
+        { email: user.email, name: user.username },
+        process.env.SECRET_KEY,
+        { expiresIn: '1d' }
+      );
+      return res.status(200).json({ success: true, token });
+    } else {
+      return res.status(200).json({ success: false, error: "Invalid Credentials" });
     }
-}
+  } else {
+    return res.status(405).json({ error: 'Method Not Allowed' }); // ✅ 405 is proper here
+  }
+};
+
 export default handler;
+
