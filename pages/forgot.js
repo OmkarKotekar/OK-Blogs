@@ -28,7 +28,7 @@ const Forgot = () => {
 
     if (emailForm) {
       const data = { email, sent: true }
-      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+      const res = await fetch(`/api/forgot`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -58,7 +58,7 @@ const Forgot = () => {
     else if (passwordForm && localStorage.getItem('otp')) {
       if (cpassword === password) {
         const data = { email, password }
-        const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatePass`, {
+        const res = await fetch(`/api/updatePass`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -67,7 +67,7 @@ const Forgot = () => {
         localStorage.removeItem('otp')
         toast.success('Password updated successfully')
         setTimeout(() => {
-          router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)
+          router.push(`/login`)
         }, 1000)
       } else {
         toast.error('Passwords do not match')

@@ -38,7 +38,7 @@ const BlogPost = ({ blog, isBlogCreator }) => {
         await navigator.share({
           title: blog.title,
           text: blog.title,
-          url: `${process.env.NEXT_PUBLIC_HOST}/blog/${blog.slug}`,
+          url: `/blog/${blog.slug}`,
         });
         console.log('Sharing successful');
       } catch (error) {
@@ -98,7 +98,7 @@ export async function getServerSideProps(context) {
   const token = context.req.cookies.token || '';
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/blog/${slug}`, {
+    const res = await fetch(`/api/blog/${slug}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
