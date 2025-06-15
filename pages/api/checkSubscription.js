@@ -1,11 +1,11 @@
+// /pages/api/checkSubscription.js
+
 import jwt from 'jsonwebtoken';
 import User from '../../models/User';
 import connectDb from '@/middlewear/mongoose';
 import cookie from 'cookie';
 
 const handler = async (req, res) => {
-  await connectDb();
-
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -28,7 +28,7 @@ const handler = async (req, res) => {
     const currentUsername = decoded.name;
 
     if (currentUsername === creatorUsername) {
-      return res.status(200).json({ isSubscribed: false }); // Can't be subscribed to self
+      return res.status(200).json({ isSubscribed: false });
     }
 
     const currentUser = await User.findOne({ username: currentUsername });
@@ -46,4 +46,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler;
+export default connectDb(handler); // ✅ consistent export

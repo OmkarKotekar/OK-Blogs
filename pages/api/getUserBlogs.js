@@ -3,22 +3,25 @@ import connectDb from "@/middlewear/mongoose";
 import jwt from "jsonwebtoken";
 
 const handler = async (req, res) => {
-  await connectDb();
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
     const token = req.cookies.token;
     if (!token) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
     }
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const username = decoded.name;
-    console.log("Fetching blogs for user:", username);
+
+    console.log("Fetching blogs for:", username);
 
     const sortBy = req.query.sortBy || "createdAt";
-
     let blogs = await Blog.find({ createdBy: username }).lean();
 
+    // Sorting logic
     switch (sortBy) {
       case "trending":
         blogs.sort(
@@ -40,11 +43,11 @@ const handler = async (req, res) => {
         break;
     }
 
-    res.status(200).json({ user: username, blogs });
+    return res.status(200).json({ user: username, blogs });
   } catch (err) {
     console.error("Error in getUserBlogs API:", err);
-    res.status(500).json({ error: "Something went wrong" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-export default handler;
+export default connectDb(handler); // ✅ consistent with rest of your project

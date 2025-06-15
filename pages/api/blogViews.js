@@ -4,8 +4,6 @@ import jwt from "jsonwebtoken";
 import cookie from "cookie";
 
 const handler = async (req, res) => {
-  await connectDb(); // ✅ Manual call, don't wrap below
-
   if (req.method !== 'GET') {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -35,8 +33,7 @@ const handler = async (req, res) => {
       }
     ]);
 
-    const viewsCount = totalViews.length > 0 ? totalViews[0].totalViews : 0;
-
+    const viewsCount = totalViews[0]?.totalViews || 0;
     return res.status(200).json({ viewsCount });
   } catch (error) {
     console.error("Error in blogViews API:", error);
@@ -44,4 +41,4 @@ const handler = async (req, res) => {
   }
 };
 
-export default handler; // ✅ Correct export
+export default connectDb(handler); // ✅ consistent and clean
