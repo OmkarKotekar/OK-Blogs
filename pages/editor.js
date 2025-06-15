@@ -26,9 +26,18 @@ export default function IndexPage() {
   };
 
   const extractFirstParagraph = (htmlContent) => {
-    const doc = new DOMParser().parseFromString(htmlContent, "text/html");
-    return doc.querySelector("p")?.textContent.slice(0, 50) || "";
-  };
+  const doc = new DOMParser().parseFromString(htmlContent, "text/html");
+  const paragraphs = doc.querySelectorAll("p");
+
+  for (let p of paragraphs) {
+    const text = p.textContent.trim();
+    if (text.length > 0) {
+      return text.slice(0, 150); // Or 50 if you prefer shorter meta descriptions
+    }
+  }
+
+  return "No description available.";
+};
 
   const extractImagesFromHtml = (htmlContent) => {
     const doc = new DOMParser().parseFromString(htmlContent, "text/html");
