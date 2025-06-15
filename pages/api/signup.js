@@ -25,3 +25,4 @@ const handler = async (req, res) => {
 };
 
 export default connectDb(handler);
+//error is to be solved
