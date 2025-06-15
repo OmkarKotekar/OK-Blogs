@@ -25,25 +25,34 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await fetch(`/api/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
-    });
+  e.preventDefault();
 
-    const response = await res.json();
-    setUsername('');
-    setEmail('');
-    setPassword('');
+  const res = await fetch('/api/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, email, password }),
+  });
 
-    if (response.success) {
-      toast.success('Account created successfully!');
-      setTimeout(() => router.push('/login'), 1500);
-    } else {
-      toast.error(response.error || 'Signup failed!');
-    }
-  };
+  let response;
+  try {
+    response = await res.json();
+  } catch (err) {
+    toast.error('Server error, please try again');
+    return;
+  }
+
+  setUsername('');
+  setEmail('');
+  setPassword('');
+
+  if (response.success) {
+    toast.success('Account created successfully!');
+    setTimeout(() => router.push('/login'), 1500);
+  } else {
+    toast.error(response.error || 'Signup failed!');
+  }
+};
+
 
   return (
     <>
