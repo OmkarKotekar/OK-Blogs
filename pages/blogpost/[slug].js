@@ -20,7 +20,7 @@ const BlogPost = ({ blog, isBlogCreator }) => {
 
   const handleLikeButtonClick = async () => {
     try {
-      const res = await fetch(`/api/blog/${router.query.slug}`, { method: 'POST' });
+      const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/blog/${router.query.slug}`, { method: 'POST' });
       if (res.ok) {
         const data = await res.json();
         setLikes(data.likes);

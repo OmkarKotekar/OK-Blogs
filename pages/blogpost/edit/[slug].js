@@ -186,7 +186,7 @@ export async function getServerSideProps({ params }) {
   const { slug } = params;
 
   try {
-    const response = await fetch(`/api/blog/${slug}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/blog/${slug}`);
     const blog = await response.json();
 
     if (!response.ok) {
