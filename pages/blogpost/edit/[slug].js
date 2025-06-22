@@ -152,7 +152,7 @@ const EditBlog = ({ initialBlogContent, initialCategory }) => {
         theme="colored"
       />
 
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e0eafc] to-[#cfdef3] py-12 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e0eafc] to-[#cfdef3] py-22 px-4">
         <div className="w-full max-w-5xl bg-white/60 backdrop-blur-md rounded-2xl shadow-xl p-8 space-y-6 border border-white/20">
           <h2 className="text-4xl font-bold text-center text-gray-800 mb-4">✍️ Edit Your Blog</h2>
 
