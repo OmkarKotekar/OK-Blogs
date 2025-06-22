@@ -98,7 +98,8 @@ export async function getServerSideProps(context) {
   const token = context.req.cookies.token || '';
 
   try {
-    const res = await fetch(`/api/blog/${slug}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_HOST || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/blog/${slug}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
